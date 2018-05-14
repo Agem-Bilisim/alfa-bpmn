@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="testRedirect_2" name="testRedirectName_2" isExecutable="true">
+    <startEvent id="startTask">
+      <extensionElements>
+        <activiti:formProperty id="goBack" name="Geri Gitsin Mi ?" type="combobox" variable="goBack">
+          <activiti:value id="options" name="[['0','Hayır'],['1','Evet']]"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="kime" name="Kime Atanacak" type="textbox" variable="kime"></activiti:formProperty>
+        <activiti:formProperty id="nextInputStyle" name="Sonraki Alan Stili" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="firstTask" name="first task" activiti:assignee="${kime}">
+      <extensionElements>
+        <activiti:formProperty id="kime" name="Kime Atansın" type="textbox" variable="kime">
+          <activiti:value id="style" name="${nextInputStyle}"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="ab" sourceRef="startTask" targetRef="firstTask"></sequenceFlow>
+    <userTask id="secondTask" name="second task" activiti:assignee="${kime}">
+      <extensionElements>
+        <activiti:formProperty id="goBack" name="Geri Gitsin Mi ?" type="combobox" variable="goBack">
+          <activiti:value id="options" name="[['0','Hayır'],['1','Evet']]"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endTask"></endEvent>
+    <serviceTask id="servicetask_test" name="Service Task" activiti:class="tr.com.agem.alfa.bpmn.servicetask.AlfaRedirectServiceTask">
+      <extensionElements>
+        <activiti:field name="redirectTo">
+          <activiti:string><![CDATA[firstTask]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="redirectCondition">
+          <activiti:expression><![CDATA[${goBack=='1'}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="de" sourceRef="servicetask_test" targetRef="endTask"></sequenceFlow>
+    <sequenceFlow id="cd" sourceRef="secondTask" targetRef="servicetask_test"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task" activiti:class="tr.com.agem.alfa.bpmn.servicetask.AlfaRedirectServiceTask">
+      <extensionElements>
+        <activiti:field name="redirectTo">
+          <activiti:string><![CDATA[firstTask]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="redirectCondition">
+          <activiti:expression><![CDATA[${goBack=='1'}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" sourceRef="firstTask" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="bc" sourceRef="servicetask1" targetRef="secondTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testRedirect_2">
+    <bpmndi:BPMNPlane bpmnElement="testRedirect_2" id="BPMNPlane_testRedirect_2">
+      <bpmndi:BPMNShape bpmnElement="startTask" id="BPMNShape_startTask">
+        <omgdc:Bounds height="35.0" width="35.0" x="75.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="firstTask" id="BPMNShape_firstTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="155.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="secondTask" id="BPMNShape_secondTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="450.0" y="158.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endTask" id="BPMNShape_endTask">
+        <omgdc:Bounds height="35.0" width="35.0" x="792.0" y="164.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask_test" id="BPMNShape_servicetask_test">
+        <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="142.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="ab" id="BPMNEdge_ab">
+        <omgdi:waypoint x="110.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="155.0" y="206.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="de" id="BPMNEdge_de">
+        <omgdi:waypoint x="685.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="cd" id="BPMNEdge_cd">
+        <omgdi:waypoint x="550.0" y="198.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="169.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="205.0" y="246.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="280.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bc" id="BPMNEdge_bc">
+        <omgdi:waypoint x="382.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
