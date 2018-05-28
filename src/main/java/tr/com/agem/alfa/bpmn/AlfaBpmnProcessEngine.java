@@ -134,15 +134,40 @@ public class AlfaBpmnProcessEngine
 	 * @param resourceName - name of the resource 
 	 * @param inputStream - inputstream of the model definition
 	 */
+	public ProcessDefinition deployModelProcessDefinition(String name, String resourceName, String inputStream) 
+	{
+		Deployment deployment = getProcessEngine().getRepositoryService().createDeployment().name(name)
+				.addString(resourceName, inputStream).deploy();
+		
+		if (deployment != null) {
+			ProcessDefinition process = getProcessEngine().getRepositoryService().
+					createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
+
+			logger.info(deployment.getName() + " model has been deployed with the key " + process.getKey());
+			return process;
+		} else {
+			logger.error("Unable to deploy resource with content " + inputStream);
+			throw new AlfaBpmnProcessEngineException("Unable to deploy resource with content " + inputStream);
+		}
+	}	
+
+	
+	/**
+	 * The function deploys BPMN2.0 model to activiti engine
+	 * @param name - name of the process model
+	 * @param resourceName - name of the resource 
+	 * @param inputStream - inputstream of the model definition
+	 */
 	public String deployModel(String name, String resourceName, String inputStream) 
 	{
 		String id = "0";
-		Deployment x = getProcessEngine().getRepositoryService().createDeployment().name(name)
+		
+		Deployment deployment = getProcessEngine().getRepositoryService().createDeployment().name(name)
 				.addString(resourceName, inputStream).deploy();
 
-		if (x != null) {
-			logger.debug(x.getName() + " model has been deployed");
-			id = x.getId();
+		if (deployment != null) {
+			logger.debug(deployment.getName() + " model has been deployed");
+			id = deployment.getId();
 		} else {
 			logger.error("Unable to deploy resource with path " + resourceName);
 		}
@@ -1062,6 +1087,7 @@ public class AlfaBpmnProcessEngine
 		return processEngine.getRepositoryService().getProcessDiagram(definition.getId());
 	}
 
+	
 	/**
 	 * Returns the png image of the process diagram with the given process definition id
 	 * @param processDefinitionId

@@ -22,7 +22,6 @@ public class DeployModelApp
 //			AlfaBpmnProcessEngine.getInstance().getProcessEngine().getRepositoryService().deleteDeployment(d.getId());
 //		}
 		
-		
 		AlfaBpmnProcessEngine.destroy();
 	}
 }
