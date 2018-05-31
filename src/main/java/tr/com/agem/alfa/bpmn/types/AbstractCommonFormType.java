@@ -18,16 +18,17 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 {
 	private static final long serialVersionUID = 9174362796522080281L;
 	
-	Map<String,String> map;
 	
 	private String variable;
 	
 	private String id;	
 	private String label;
-	private String styleClass;
+
 	private boolean required;
 	private boolean writeable;
 	private boolean readable;
+	
+	private Map<String,String> map;
 	
 	public void setVariable(String variable) 
 	{
@@ -67,15 +68,11 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 		this.id= property.getId();
 		this.label= property.getName();
 		
-		this.styleClass= map.get("styleClass");
 		this.readable = property.isReadable();
 		this.writeable = property.isWriteable();
 		this.required = property.isRequired();
 
 		return this;
-	}
-	public String getStyleClass() {
-		return styleClass;
 	}
 
 	public String getLabel() {
@@ -123,5 +120,6 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	}
 	
 	public abstract Object renderInputForType(org.activiti.engine.form.FormProperty property);
-	
+
+
 }
