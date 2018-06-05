@@ -22,8 +22,16 @@ public abstract class AbstractTextareaFormType extends AbstractCommonFormType
 	{
 		super.parseInput(property);
 		try {
-			rows = Integer.parseInt(super.getMap().get("rows"));
-			cols = Integer.parseInt(super.getMap().get("cols"));
+			if (super.getMap().get("rows") != null) {
+				rows = Integer.parseInt(super.getMap().get("rows"));
+			} else {
+				rows = 0;
+			}
+			if (super.getMap().get("cols") != null) {
+				cols = Integer.parseInt(super.getMap().get("cols"));
+			} else {
+				cols = 0;
+			}
 		} catch (NumberFormatException e) {
 			throw new AlfaBpmnProcessEngineException("rows and cols values for textarea must be numeric", e);
 		}
